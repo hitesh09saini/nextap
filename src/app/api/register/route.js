@@ -7,10 +7,10 @@ export async function POST(req, res) {
 
         // Create a connection pool
         const pool = mysql.createPool({
-            host: process.env.NEXT_PUBLIC_HOST,
-            user: process.env.NEXT_PUBLIC_USER,
-            password: process.env.NEXT_PUBLIC_PASSWORD,
-            database: process.env.NEXT_PUBLIC_DATABASE,
+            host: 'sql12.freesqldatabase.com',
+            user: 'sql12674708',
+            password: 'MwFRrrJwIn',
+            database: 'sql12674708',
             port: 3306,
         });
 

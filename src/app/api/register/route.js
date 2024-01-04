@@ -1,27 +1,8 @@
 import { NextResponse } from "next/server";
-// import pool from '@/utils/dbConnection';
-import mysql from 'mysql';
+import pool from '@/utils/dbConnection';
 
 export async function POST(req, res) {
     try {
-
-        // Create a connection pool
-        const pool = mysql.createPool({
-            host: 'sql12.freesqldatabase.com',
-            user: 'sql12674708',
-            password: 'MwFRrrJwIn',
-            database: 'sql12674708',
-            port: 3306,
-        });
-
-
-        pool.getConnection((err, connection) => {
-            if (err) {
-                console.log(err);
-            }
-            console.log("connected to db...");
-        });
-
         const body = await req.json();
 
         console.log(body.name, body.email);
@@ -34,7 +15,7 @@ export async function POST(req, res) {
             });
         }
 
-        // // Creating the 'form' table if it doesn't exist
+        // Creating the 'form' table if it doesn't exist
         const createTableQuery = `
             CREATE TABLE IF NOT EXISTS form (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -42,7 +23,7 @@ export async function POST(req, res) {
                 email VARCHAR(255) UNIQUE NOT NULL
             )`;
 
-        // // Wrap the create table query in a Promise to use await
+        // Wrap the create table query in a Promise to use await
         await new Promise((resolve, reject) => {
             pool.query(createTableQuery, (err) => {
                 if (err) {
@@ -55,10 +36,10 @@ export async function POST(req, res) {
             });
         });
 
-        // // Inserting data into the 'form' table
+        // Inserting data into the 'form' table
         const insertDataQuery = 'INSERT INTO form (name, email) VALUES (?, ?)';
 
-        // // Wrap the insert data query in a Promise to use await
+        // Wrap the insert data query in a Promise to use await
         const result = await new Promise((resolve, reject) => {
             pool.query(insertDataQuery, [body.name, body.email], (err, results) => {
                 if (err) {

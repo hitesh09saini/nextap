@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
-import getConnectionFromPool from '@/utils/dbConnection';
+import pool from '@/utils/dbConnection';
 
 export async function POST(req, res) {
     try {
         const body = await req.json();
 
         console.log(body.name, body.email);
+
         if (!body.name || !body.email) {
             return NextResponse.json({
                 message: "Name and email are required fields.",
@@ -13,8 +14,6 @@ export async function POST(req, res) {
                 status: 400
             });
         }
-
-        const connection = await getConnectionFromPool();
 
         // Creating the 'form' table if it doesn't exist
         const createTableQuery = `
@@ -26,7 +25,7 @@ export async function POST(req, res) {
 
         // Wrap the create table query in a Promise to use await
         await new Promise((resolve, reject) => {
-            connection.query(createTableQuery, (err) => {
+            pool.query(createTableQuery, (err) => {
                 if (err) {
                     console.error('Error creating table: ' + err.stack);
                     reject(err);
@@ -42,7 +41,7 @@ export async function POST(req, res) {
 
         // Wrap the insert data query in a Promise to use await
         const result = await new Promise((resolve, reject) => {
-            connection.query(insertDataQuery, [body.name, body.email], (err, results) => {
+            pool.query(insertDataQuery, [body.name, body.email], (err, results) => {
                 if (err) {
                     console.error('Error inserting data: ' + err.stack);
                     reject(err);
@@ -52,9 +51,6 @@ export async function POST(req, res) {
                 }
             });
         });
-
-        // Release the connection back to the pool
-        connection.release();
 
         return NextResponse.json({
             message: "Data inserted successfully",

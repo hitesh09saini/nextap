@@ -1,33 +1,30 @@
 import { NextResponse } from "next/server";
-import getConnectionFromPool from '@/utils/dbConnection';
+import pool from '@/utils/dbConnection';
 
 export async function GET(req, res) {
     try {
-        const connection = await getConnectionFromPool();
-
         const selectAllQuery = 'SELECT * FROM form';
 
         // Wrap the query in a Promise to use await
         const queryAsync = () => {
             return new Promise((resolve, reject) => {
-                connection.query(selectAllQuery, (err, results) => {
-                    // Release the connection back to the pool
-                    connection.release();
-
-                    if (err) {
-                        console.error('Error fetching ' + err.stack);
-                        reject(err);
-                    } else {
-                        resolve(results);
-                    }
-                });
+                try {
+                    pool.query(selectAllQuery, (err, results) => {
+                        if (err) {
+                            console.error('Error fetching ' + err.stack);
+                            reject(err);
+                        } else {
+                            resolve(results);
+                        }
+                    });
+                } catch (err) {
+                    reject(err);
+                }
             });
         };
 
         // Use await to wait for the result of the query
         const results = await queryAsync();
-
-        console.log(results);
 
         return NextResponse.json({
             message: "Data fetched successfully",

@@ -12,7 +12,16 @@ const Page = () => {
     e.preventDefault();
     if (name && email) {
       try {
-        const response = await axios.post(`/api/register`, {name, email});
+        const response = await axios({
+          method:"post",
+          data: {
+            name,
+            email
+          },
+          withCredentials:true,
+          url: '/api/register'
+
+        });
         if (response) {
           console.log(response);
           setEmail('');

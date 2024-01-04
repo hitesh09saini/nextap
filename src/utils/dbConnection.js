@@ -1,7 +1,8 @@
 import mysql from 'mysql';
 
 // Create a connection pool
-const pool = mysql.createPool({
+const db = mysql.createPool({
+  connectionLimit: 10,
   host: process.env.NEXT_PUBLIC_HOST,
   user: process.env.NEXT_PUBLIC_USER,
   password: process.env.NEXT_PUBLIC_PASSWORD,
@@ -10,11 +11,4 @@ const pool = mysql.createPool({
 });
 
 
-pool.getConnection((err, connection) => {
-  if (err) {
-    console.log(err);
-  } 
-  console.log("connected to db...");
-});
-
-export default pool;
+export default db;

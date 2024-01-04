@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import pool from '@/utils/dbConnection';
+import db from '@/utils/dbConnection';
 
 export async function GET(req, res) {
     try {
@@ -9,7 +9,7 @@ export async function GET(req, res) {
         const queryAsync = () => {
             return new Promise((resolve, reject) => {
                 try {
-                    pool.query(selectAllQuery, (err, results) => {
+                    db.query(selectAllQuery, (err, results) => {
                         if (err) {
                             console.error('Error fetching ' + err.stack);
                             reject(err);

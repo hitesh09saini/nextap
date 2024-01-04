@@ -15,46 +15,46 @@ export async function POST(req, res) {
             });
         }
 
-        // Creating the 'form' table if it doesn't exist
-        const createTableQuery = `
-            CREATE TABLE IF NOT EXISTS form (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) UNIQUE NOT NULL
-            )`;
+        // // Creating the 'form' table if it doesn't exist
+        // const createTableQuery = `
+        //     CREATE TABLE IF NOT EXISTS form (
+        //         id INT AUTO_INCREMENT PRIMARY KEY,
+        //         name VARCHAR(255) NOT NULL,
+        //         email VARCHAR(255) UNIQUE NOT NULL
+        //     )`;
 
-        // Wrap the create table query in a Promise to use await
-        await new Promise((resolve, reject) => {
-            pool.query(createTableQuery, (err) => {
-                if (err) {
-                    console.error('Error creating table: ' + err.stack);
-                    reject(err);
-                } else {
-                    console.log('Table created or already exists');
-                    resolve();
-                }
-            });
-        });
+        // // Wrap the create table query in a Promise to use await
+        // await new Promise((resolve, reject) => {
+        //     pool.query(createTableQuery, (err) => {
+        //         if (err) {
+        //             console.error('Error creating table: ' + err.stack);
+        //             reject(err);
+        //         } else {
+        //             console.log('Table created or already exists');
+        //             resolve();
+        //         }
+        //     });
+        // });
 
-        // Inserting data into the 'form' table
-        const insertDataQuery = 'INSERT INTO form (name, email) VALUES (?, ?)';
+        // // Inserting data into the 'form' table
+        // const insertDataQuery = 'INSERT INTO form (name, email) VALUES (?, ?)';
 
-        // Wrap the insert data query in a Promise to use await
-        const result = await new Promise((resolve, reject) => {
-            pool.query(insertDataQuery, [body.name, body.email], (err, results) => {
-                if (err) {
-                    console.error('Error inserting data: ' + err.stack);
-                    reject(err);
-                } else {
-                    console.log('Data inserted successfully');
-                    resolve(results);
-                }
-            });
-        });
+        // // Wrap the insert data query in a Promise to use await
+        // const result = await new Promise((resolve, reject) => {
+        //     pool.query(insertDataQuery, [body.name, body.email], (err, results) => {
+        //         if (err) {
+        //             console.error('Error inserting data: ' + err.stack);
+        //             reject(err);
+        //         } else {
+        //             console.log('Data inserted successfully');
+        //             resolve(results);
+        //         }
+        //     });
+        // });
 
         return NextResponse.json({
             message: "Data inserted successfully",
-            data: result
+            // data: result
         }, {
             status: 200
         });

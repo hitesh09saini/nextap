@@ -1,14 +1,13 @@
-const mysql = require('mysql');
+import mysql  from 'mysql';
 
 const ConnectDB = () => {
   const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Ssss9694#',
-    database: 'collegeid'
+    host: `${process.env.NEXT_PUBLIC_HOST}`,
+    user: `${process.env.NEXT_PUBLIC_USER}`,
+    password: `${process.env.NEXT_PUBLIC_PASSWORD}#`,
+    database:`${process.env.NEXT_PUBLIC_DATABASE}`,
   });
-
   return connection;
 };
 
-module.exports = ConnectDB;
+export default ConnectDB;
